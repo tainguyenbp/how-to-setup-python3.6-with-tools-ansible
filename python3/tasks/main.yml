@@ -1,0 +1,4 @@
+- set_fact: role_name=python3
+##################################################
+####### Install asterisk version 13.23.1
+- include: install.yml

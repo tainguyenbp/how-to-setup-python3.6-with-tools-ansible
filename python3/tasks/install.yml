@@ -1,0 +1,98 @@
+
+- name: Install 
+  yum:
+    pkg: "{{ item }}"
+    state: installed
+  with_items:
+    - https://centos7.iuscommunity.org/ius-release.rpm
+
+- name: Install python3
+  yum:
+    pkg: "{{ item }}"
+    state: installed
+  with_items:
+   - python36u
+   - python36u-libs
+   - python36u-devel
+   - python36u-pip
+
+- name: Install build tools
+  yum:
+    name: "@Development tools"
+    state: present
+  become: yes
+
+- name: Create folders /home/setup-python/
+  file:
+    path: '{{ item.path }}'
+    mode: '{{ item.mode }}'
+    state: directory
+    owner: root
+    group: root
+  with_items:
+    - { path: "/home/setup-python/", mode: 755 }
+
+- name: Extract file python-3.6.4.tar.gz
+  unarchive:
+    src: Python-3.6.4.tar.xz
+    dest: /home/setup-python/
+
+- name: Configure python
+  command: ./configure
+  args:
+    chdir: '{{ python_src_dir }}'
+
+- name: Make python
+  command: make
+  args:
+    chdir: '{{ python_src_dir }}'
+
+- name: Make install python
+  command: make install
+  args:
+    chdir: '{{ python_src_dir }}'
+
+- name: Upgrade pip
+  command: python3.6 -m pip install --upgrade pip
+  args:
+    chdir: '{{ python_eviroment_dir }}'
+
+- name: Install module psutil
+  command: pip3.6 install psutil
+  args:
+    chdir: '{{ python_eviroment_dir }}'
+
+- name: Install module http
+  unarchive:
+    src: http-0.02.tar.gz
+    dest: '{{ python_eviroment_dir }}'
+
+- name: Install module prometheus
+  unarchive:
+    src: prometheus-0.3.0.tar.gz
+    dest: '{{ python_eviroment_dir }}'
+
+- name: Install module prometheus_client
+  command: pip3.6 install prometheus_client
+  args:
+    chdir: '{{ python_eviroment_dir }}'
+
+- name: Install module request
+  command: pip3.6 install request
+  args:
+    chdir: '{{ python_eviroment_dir }}'
+
+- name: Install module collectors
+  command: pip3.6 install collectors
+  args:
+    chdir: '{{ python_eviroment_dir }}'
+
+- name: Install module jsonify
+  command: pip3.6 install jsonify
+  args:
+    chdir: '{{ python_eviroment_dir }}'
+
+- name: Install module flask
+  command: pip3.6 install flask
+  args:
+    chdir: '{{ python_eviroment_dir }}'

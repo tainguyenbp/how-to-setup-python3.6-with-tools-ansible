@@ -1,0 +1,3 @@
+- hosts: server3
+  roles:
+    - python3
