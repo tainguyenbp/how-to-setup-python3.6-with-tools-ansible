@@ -8,4 +8,5 @@ add text below:
 server-prometheus-3 ansible_host=192.168.1.179 ansible_port=22 ansible_user=root ansible_ssh_pass=nntai@tainguyenbp
 
 run playbook:
+
 ansible-playbook install.yml
